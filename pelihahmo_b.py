@@ -18,18 +18,21 @@ class Character:
     #       __init__ and printout methods to conform with
     #       the new behavior of the class.
 
+    def __init__(self, character_name, hitpoints,
+                 starting_items = None):
 
-    def __init__(self, Character_name,
-                 item_dict = None, give_item = ""):
+        self.__name = character_name
 
-        self.__name = Character_name
+        if starting_items is None:
+            starting_items = {}
 
-        if item_dict is None:
-            item_dict = {}
+        self.__item_dict = starting_items
 
-        self.__item_dict = item_dict
+        self.__hitpoints = hitpoints
 
-        self.__give_item = {}
+        # self.__item_dict = item_dict
+
+        # self.__give_item = {}
 
 
     def printout(self):
@@ -41,10 +44,10 @@ class Character:
         else:
 
             print("Name:", self.__name)
-            print("Hitpoints:", self.__item_dict)
+            print("Hitpoints:", self.__hitpoints)
 
-            for item in sorted(self.__give_item):
-                print(" ", self.__give_item[item], item)
+            for item in sorted(self.__item_dict):
+                print(" ", self.__item_dict[item], item)
 
 
 
@@ -55,11 +58,11 @@ class Character:
 
     def give_item(self, test_item):
 
-        if test_item in self.__give_item:
-            self.__give_item[test_item] += 1
+        if test_item in self.__item_dict:
+            self.__item_dict[test_item] += 1
 
         else:
-            self.__give_item[test_item] = 1
+            self.__item_dict[test_item] = 1
 
 
 
@@ -101,9 +104,20 @@ class Character:
         :return: True, if passing the item to target was successful.
                  False, it passing the item failed for any reason.
         """
-        for item, target in self.__give_item.items():
-            if item in self.__give_item:
-                self.__give_item.pop(item)
+
+        if item in self.__item_dict:
+            if item in target.__item_dict:
+                target.__item_dict[item] += 1
+
+            else:
+                target.__item_dict[item] = 1
+
+            if item in self.__item_dict:
+                self.__item_dict[item] -= 1
+
+                if self.__item_dict[item] == 0:
+                    self.__item_dict.pop(item)
+
 
 
 
